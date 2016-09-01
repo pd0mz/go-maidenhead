@@ -85,16 +85,16 @@ var parseLocatorMult = []struct {
 	s, p string
 	mult float64
 }{
-	{upper[:18], lower[:18], 10.0},
 	{upper[:18], lower[:18], 20.0},
-	{digit[:10], digit[:10], 10.0 / 10.0},
+	{upper[:18], lower[:18], 10.0},
 	{digit[:10], digit[:10], 20.0 / 10.0},
-	{upper[:24], lower[:24], 10.0 / (10.0 * 24.0)},
+	{digit[:10], digit[:10], 10.0 / 10.0},
 	{upper[:24], lower[:24], 20.0 / (10.0 * 24.0)},
-	{digit[:10], digit[:10], 10.0 / (10.0 * 24.0 * 10.0)},
+	{upper[:24], lower[:24], 10.0 / (10.0 * 24.0)},
 	{digit[:10], digit[:10], 20.0 / (10.0 * 24.0 * 10.0)},
-	{lower[:24], lower[:24], 10.0 / (10.0 * 24.0 * 10.0 * 24.0)},
+	{digit[:10], digit[:10], 10.0 / (10.0 * 24.0 * 10.0)},
 	{lower[:24], lower[:24], 20.0 / (10.0 * 24.0 * 10.0 * 24.0)},
+	{lower[:24], lower[:24], 10.0 / (10.0 * 24.0 * 10.0 * 24.0)},
 }
 
 func parseLocator(locator string, strict bool) (point Point, err error) {
