@@ -97,6 +97,8 @@ var parseLocatorMult = []struct {
 	{lower[:24], lower[:24], 10.0 / (10.0 * 24.0 * 10.0 * 24.0)},
 }
 
+var maxLocatorLength = len(parseLocatorMult)
+
 func parseLocator(locator string, strict bool) (point Point, err error) {
 	var (
 		lnglat = [2]float64{
@@ -105,6 +107,17 @@ func parseLocator(locator string, strict bool) (point Point, err error) {
 		}
 		j int
 	)
+
+	if len(locator) > maxLocatorLength {
+		err = fmt.Errorf("maidenhead: locator is too long (%d characters, maximum %d characters allowed)",
+			len(locator), maxLocatorLength)
+		return
+	}
+
+	if len(locator)%2 != 0 {
+		err = fmt.Errorf("maidenhead: locator has odd number of characters")
+		return
+	}
 
 	if strict {
 		for i, char := range locator {

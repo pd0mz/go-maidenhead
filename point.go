@@ -113,7 +113,7 @@ func (p Point) CompassBearing(heading Point) string {
 	return ""
 }
 
-// Distance calculates the (approximate) distnace to another point in km.
+// Distance calculates the (approximate) distance to another point in km.
 func (p Point) Distance(other Point) float64 {
 	var (
 		hn = p.Latitude / 180 * math.Pi
@@ -131,10 +131,13 @@ func (p Point) Distance(other Point) float64 {
 	return r * ca
 }
 
+// GridSquare returns a Maidenhead Locator for the point coordinates
 func (p Point) GridSquare() (string, error) {
 	return locator(p, SubSquarePrecision)
 }
 
+// Locator returns a Maidenhead Locator for the point coordinates with
+// specified precision
 func (p Point) Locator(precision int) (string, error) {
 	return locator(p, precision)
 }

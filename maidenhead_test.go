@@ -41,3 +41,27 @@ func TestExtendedSquarePrecision(t *testing.T) {
 		t.Logf("%s encoded to %q\n", test.point, got)
 	}
 }
+
+// invalid Maiden Head locators must return error
+func TestParseInvalidLocatorStrict(t *testing.T) {
+	locs := []string{
+		"JN58td",
+		"JN58TDAA",
+		"JNH",
+		"QN58jh",
+		"JN77ya",
+		" ",
+		"JN55J",
+		"JN89HA11aa2",
+		"JN89HA11aa22",
+	}
+
+	for _, l := range locs {
+		_, err := ParseLocatorStrict(l)
+		if err == nil {
+			t.Errorf("Parsing invalid locator '%s' with ParseLocatorStrict() doesn't return any error", l)
+		} else {
+			t.Logf("Parsing invalid locator '%s' returns error: %s", l, err)
+		}
+	}
+}
