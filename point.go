@@ -27,6 +27,7 @@ type Point struct {
 	Longitude float64
 }
 
+// NewPoint returns a new Point structure with given latitude and longitude.
 func NewPoint(latitude, longitude float64) Point {
 	return Point{latitude, longitude}
 }
@@ -41,6 +42,7 @@ func ParseLocatorStrict(locator string) (Point, error) {
 	return parseLocator(locator, true)
 }
 
+// EqualTo returns true if the coordinates point to the same geographical location.
 func (p Point) EqualTo(other Point) bool {
 	var (
 		dlat = p.Latitude - other.Latitude
@@ -93,7 +95,7 @@ func (p Point) Bearing(heading Point) float64 {
 	return az * 180 / math.Pi
 }
 
-// BearingCompass returns the compass bearing to a heading.
+// CompassBearing returns the compass bearing to a heading.
 func (p Point) CompassBearing(heading Point) string {
 	bearing := p.Bearing(heading)
 	for bearing < 0.0 {
@@ -131,7 +133,7 @@ func (p Point) Distance(other Point) float64 {
 	return r * ca
 }
 
-// GridSquare returns a Maidenhead Locator for the point coordinates
+// GridSquare returns a Maidenhead Locator for the point coordinates.
 func (p Point) GridSquare() (string, error) {
 	return locator(p, SubSquarePrecision)
 }
@@ -142,6 +144,7 @@ func (p Point) Locator(precision int) (string, error) {
 	return locator(p, precision)
 }
 
+// String returns a stringified Point structure.
 func (p Point) String() string {
 	return fmt.Sprintf("Point(%f, %f)", p.Latitude, p.Longitude)
 }
