@@ -34,12 +34,24 @@ func NewPoint(latitude, longitude float64) Point {
 
 // ParseLocator parses a Maidenhead Locator with permissive rule matching.
 func ParseLocator(locator string) (Point, error) {
-	return parseLocator(locator, false)
+	return parseLocator(locator, false, false)
 }
 
 // ParseLocatorStrict parses a Maidenhead Locator with strict rule matching.
 func ParseLocatorStrict(locator string) (Point, error) {
-	return parseLocator(locator, true)
+	return parseLocator(locator, true, false)
+}
+
+// ParseLocatorCentered parses a Maidenhead Locator with permissive rule matching.
+// Returns Points structure with coordinates of the square center
+func ParseLocatorCentered(locator string) (Point, error) {
+	return parseLocator(locator, false, true)
+}
+
+// ParseLocatorStrictCentered parses a Maidenhead Locator with strict rule matching.
+// Returns Points structure with coordinates of the square center
+func ParseLocatorStrictCentered(locator string) (Point, error) {
+	return parseLocator(locator, true, true)
 }
 
 // EqualTo returns true if the coordinates point to the same geographical location.

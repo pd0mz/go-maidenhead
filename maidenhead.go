@@ -99,13 +99,14 @@ var parseLocatorMult = []struct {
 
 var maxLocatorLength = len(parseLocatorMult)
 
-func parseLocator(locator string, strict bool) (point Point, err error) {
+func parseLocator(locator string, strict bool, centered bool) (point Point, err error) {
 	var (
 		lnglat = [2]float64{
 			-180.0,
 			-90.0,
 		}
-		j int
+		i, j int
+		char rune
 	)
 
 	if len(locator) > maxLocatorLength {
@@ -120,7 +121,7 @@ func parseLocator(locator string, strict bool) (point Point, err error) {
 	}
 
 	if strict {
-		for i, char := range locator {
+		for i, char = range locator {
 			if j = strings.Index(parseLocatorMult[i].s, string(char)); j < 0 {
 				err = fmt.Errorf("maidenhead: invalid character at offset %d", i)
 				return
@@ -128,13 +129,18 @@ func parseLocator(locator string, strict bool) (point Point, err error) {
 			lnglat[i%2] += float64(j) * parseLocatorMult[i].mult
 		}
 	} else {
-		for i, char := range strings.ToLower(locator) {
+		for i, char = range strings.ToLower(locator) {
 			if j = strings.Index(parseLocatorMult[i].p, string(char)); j < 0 {
 				err = fmt.Errorf("maidenhead: invalid character at offset %d", i)
 				return
 			}
 			lnglat[i%2] += float64(j) * parseLocatorMult[i].mult
 		}
+	}
+
+	if centered {
+		lnglat[0] += parseLocatorMult[i-1].mult / 2.0
+		lnglat[1] += parseLocatorMult[i].mult / 2.0
 	}
 
 	point = NewPoint(lnglat[1], lnglat[0])

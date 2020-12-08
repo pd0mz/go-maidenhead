@@ -1,6 +1,8 @@
 package maidenhead
 
-import "testing"
+import (
+	"testing"
+)
 
 var tests = []struct {
 	point Point
@@ -62,6 +64,31 @@ func TestParseInvalidLocatorStrict(t *testing.T) {
 			t.Errorf("Parsing invalid locator '%s' with ParseLocatorStrict() doesn't return any error", l)
 		} else {
 			t.Logf("Parsing invalid locator '%s' returns error: %s", l, err)
+		}
+	}
+}
+
+// Distance between corner point and center of the locator square
+func TestParseLocatorCentered(t *testing.T) {
+	tests := []struct {
+		loc          string
+		distExpected float64
+	}{
+		{"JN89", 91.42870273454076},
+		{"JN89HF", 3.8111046375990782},
+		{"JN89HF23", 0.38109528459829756},
+		{"JN89HF23ag", 0.015878904160500258},
+	}
+
+	for _, test := range tests {
+		p, _ := ParseLocator(test.loc)
+		pc, _ := ParseLocatorCentered(test.loc)
+
+		dist := pc.Distance(p)
+
+		if dist != test.distExpected {
+			t.Errorf("Distance between the center and corner of square locator '%s' is %g, expected %g",
+				test.loc, dist, test.distExpected)
 		}
 	}
 }
