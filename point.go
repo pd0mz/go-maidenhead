@@ -90,7 +90,7 @@ func (p Point) Bearing(heading Point) float64 {
 		az = -az
 	}
 	if az < 0.0 {
-		az = az + 2.0 + math.Pi
+		az = az + 2.0*math.Pi
 	}
 	return az * 180 / math.Pi
 }
